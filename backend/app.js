@@ -1,28 +1,31 @@
-const express = require('express')
+const express = require('express');
 const cors = require('cors');
 const { db } = require('./db/db');
-const {readdirSync} = require('fs')
-const app = express()
-require('dotenv').config()
+const { readdirSync } = require('fs');
+const app = express();
+require('dotenv').config();
 
+const PORT = process.env.PORT || 5000;
+const MONGO_URL = process.env.MONGO_URL;
 
-const PORT = process.env.PORT
+// Middlewares
+app.use(express.json());
+app.use(cors({
+    origin: 'https://classy-tiramisu-46fafa.netlify.app' // Replace with your frontend's domain
+}));
 
-//middlewares
-app.use(express.json())
-app.use(cors())
+app.get('/', (req, res) => {
+    res.send('Hello, World!');
+});
 
-
-
-//routes
-readdirSync('./routes').map((route) => app.use('/api/v1', require('./routes/' + route)))
+// Routes
+readdirSync('./routes').map((route) => app.use('/api/v1', require('./routes/' + route)));
 
 const server = () => {
-    db()
+    db();
     app.listen(PORT, () => {
-        console.log('listening to port:', PORT)
-    })
-    
-}
+        console.log('listening to port:', PORT);
+    });
+};
 
-server()
+server();
