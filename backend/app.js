@@ -11,7 +11,7 @@ const MONGO_URL = process.env.MONGO_URL;
 // Middlewares
 app.use(express.json());
 app.use(cors({
-    origin: 'https://kharcha-flax.vercel.app' // Replace with your frontend's domain
+    origin: 'https://classy-tiramisu-46fafa.netlify.app' // Replace with your frontend's domain
 }));
 
 app.get('/', (req, res) => {
