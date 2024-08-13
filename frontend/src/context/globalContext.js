@@ -3,9 +3,9 @@ import axios from 'axios';
 
 // Update the BASE_URL to point to your deployed backend URL
 // const BASE_URL = "http://my-environment.eba-5pi6jiyt.ap-south-1.elasticbeanstalk.com/api/v1/";
-const BASE_URL = "https://kharcha-n6ml.onrender.com/api/v1/";
+// const BASE_URL = "https://kharcha-n6ml.onrender.com/api/v1/";
 
-// const BASE_URL = "http://localhost:5000/api/v1/";
+const BASE_URL = "http://localhost:5000/api/v1/";
 
 const GlobalContext = React.createContext();
 
@@ -16,60 +16,68 @@ export const GlobalProvider = ({ children }) => {
 
     // Calculate incomes
     const addIncome = async (income) => {
-        const response = await axios.post(`${BASE_URL}add-income`, income)
-            .catch((err) => {
-                setError(err.response.data.message);
-            });
-        getIncomes();
+        try {
+            await axios.post(`${BASE_URL}add-income`, income);
+            getIncomes();
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
     };
 
     const getIncomes = async () => {
-        const response = await axios.get(`${BASE_URL}get-incomes`);
-        setIncomes(response.data);
-        console.log(response.data);
+        try {
+            const response = await axios.get(`${BASE_URL}get-incomes`);
+            setIncomes(response.data);
+            console.log(response.data);
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
     };
 
     const deleteIncome = async (id) => {
-        const res = await axios.delete(`${BASE_URL}delete-income/${id}`);
-        getIncomes();
+        try {
+            await axios.delete(`${BASE_URL}delete-income/${id}`);
+            getIncomes();
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
     };
 
     const totalIncome = () => {
-        let totalIncome = 0;
-        incomes.forEach((income) => {
-            totalIncome = totalIncome + income.amount;
-        });
-
-        return totalIncome;
+        return incomes.reduce((total, income) => total + income.amount, 0);
     };
 
     // Calculate expenses
-    const addExpense = async (income) => {
-        const response = await axios.post(`${BASE_URL}add-expense`, income)
-            .catch((err) => {
-                setError(err.response.data.message);
-            });
-        getExpenses();
+    const addExpense = async (expense) => {
+        try {
+            await axios.post(`${BASE_URL}add-expense`, expense);
+            getExpenses();
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
     };
 
     const getExpenses = async () => {
-        const response = await axios.get(`${BASE_URL}get-expenses`);
-        setExpenses(response.data);
-        console.log(response.data);
+        try {
+            const response = await axios.get(`${BASE_URL}get-expenses`);
+            setExpenses(response.data);
+            console.log(response.data);
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
     };
 
     const deleteExpense = async (id) => {
-        const res = await axios.delete(`${BASE_URL}delete-expense/${id}`);
-        getExpenses();
+        try {
+            await axios.delete(`${BASE_URL}delete-expense/${id}`);
+            getExpenses();
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
     };
 
     const totalExpenses = () => {
-        let totalIncome = 0;
-        expenses.forEach((income) => {
-            totalIncome = totalIncome + income.amount;
-        });
-
-        return totalIncome;
+        return expenses.reduce((total, expense) => total + expense.amount, 0);
     };
 
     const totalBalance = () => {
@@ -78,10 +86,7 @@ export const GlobalProvider = ({ children }) => {
 
     const transactionHistory = () => {
         const history = [...incomes, ...expenses];
-        history.sort((a, b) => {
-            return new Date(b.createdAt) - new Date(a.createdAt);
-        });
-
+        history.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         return history.slice(0, 3);
     };
 

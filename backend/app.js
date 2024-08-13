@@ -11,7 +11,7 @@ const MONGO_URL = process.env.MONGO_URL;
 // Middlewares
 app.use(express.json());
 app.use(cors({
-    origin: ['https://classy-tiramisu-46fafa.netlify.app', 'https://localhost:3000']
+    origin: ['http://localhost:3000', 'https://classy-tiramisu-46fafa.netlify.app']
 }));
 
 // Redirect HTTP to HTTPS
