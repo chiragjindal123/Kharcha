@@ -2,7 +2,10 @@ import React, { useContext, useState } from "react";
 import axios from 'axios';
 
 // Update the BASE_URL to point to your deployed backend URL
-const BASE_URL = "http://my-environment.eba-5pi6jiyt.ap-south-1.elasticbeanstalk.com";
+// const BASE_URL = "http://my-environment.eba-5pi6jiyt.ap-south-1.elasticbeanstalk.com/api/v1/";
+const BASE_URL = "https://kharcha-n6ml.onrender.com/api/v1/";
+
+// const BASE_URL = "http://localhost:5000/api/v1/";
 
 const GlobalContext = React.createContext();
 
